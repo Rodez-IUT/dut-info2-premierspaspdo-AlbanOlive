@@ -31,8 +31,10 @@
 			<td>Status</td>
 		</thead>
 	<?php
+		$id_status = 8;
+		$lettre = 'e';
 
-		$stmt = $pdo->query('SELECT U.id,U.username,U.email,S.name FROM users U JOIN status S ON S.id = U.status_id ORDER BY username');
+		$stmt = $pdo->query("SELECT U.id,U.username,U.email,S.name FROM users U JOIN status S ON S.id = U.status_id WHERE U.username LIKE '$lettre%' AND S.name = 'Active account' AND U.id = $id_status ORDER BY username");
 		while ($row = $stmt->fetch())
 		{
 			echo '<tr>';
