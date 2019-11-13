@@ -22,7 +22,35 @@
 		} catch (PDOException $e) {
 			throw new PDOException($e->getMessage(), (int)$e->getCode());
 		}
+		$status = 'Active account';
+		$lettre = '';		
+		if (isset($_POST['status'])) {
+			$status = $_POST['status'] ;
+		}
+		if (isset($_POST['lettre'])) {
+			$lettre = $_POST['lettre'];
+			
+		}
 	?>
+	<form action="all_users.php" method="POST">
+		Start with letter : <input type="text" name="lettre" id="lettre">
+		and status is : <select name="status" id="status">
+							<?php 
+							echo $status;
+								echo '<option value="Active account"';
+								if ($status == 'Active account') {
+									echo ' selected';
+								}
+								echo '>Active account</option>';
+								echo '<option value="Waiting for account deletion"';
+								if ($status == 'Waiting for account deletion') {
+									echo ' selected';
+								}
+								echo '>Waiting for account deletion</option>';
+							?>
+						</select>
+		<input type="submit" value="Ok">
+	</form>
 	<table>
 		<thead>
 			<td>Id</td>
@@ -31,10 +59,9 @@
 			<td>Status</td>
 		</thead>
 	<?php
-		$id_status = 8;
-		$lettre = 'e';
-
-		$stmt = $pdo->query("SELECT U.id,U.username,U.email,S.name FROM users U JOIN status S ON S.id = U.status_id WHERE U.username LIKE '$lettre%' AND S.name = 'Active account' AND U.id = $id_status ORDER BY username");
+		$stmt = $pdo->query("SELECT U.id,U.username,U.email,S.name FROM users U
+							JOIN status S ON S.id = U.status_id 
+							WHERE U.username LIKE '$lettre%' AND S.name = '$status' ORDER BY username");
 		while ($row = $stmt->fetch())
 		{
 			echo '<tr>';
