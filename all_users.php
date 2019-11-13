@@ -35,12 +35,12 @@
 		$stmt = $pdo->query('SELECT U.id,U.username,U.email,S.name FROM users U JOIN status S ON S.id = U.status_id ORDER BY username');
 		while ($row = $stmt->fetch())
 		{
-			echo "<tr>";
- 		   		echo "<td>".$row['id']."</td>";
- 		   		echo "<td>".$row['username']."</td>";
- 		   		echo "<td>".$row['email']."</td>";
- 		   		echo "<td>".$row['name']."</td>";
- 		   	echo "</tr>";
+			echo '<tr>';
+ 		   		echo '<td>'.$row['id'].'</td>';
+ 		   		echo '<td>'.$row['username'].'</td>';
+ 		   		echo '<td>'.$row['email'].'</td>';
+ 		   		echo '<td>'.$row['name'].'</td>';
+ 		   	echo '</tr>';
 		}
 	?>
 	</table>
