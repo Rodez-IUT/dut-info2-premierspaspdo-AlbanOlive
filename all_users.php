@@ -23,12 +23,12 @@
 			throw new PDOException($e->getMessage(), (int)$e->getCode());
 		}
 		$status = 'Active account';
-		$lettre = '';		
+		$lettre = '%';		
 		if (isset($_POST['status'])) {
 			$status = $_POST['status'] ;
 		}
 		if (isset($_POST['lettre'])) {
-			$lettre = $_POST['lettre'];			
+			$lettre = $_POST['lettre'].'%';			
 		}
 	?>
 	<form action="all_users.php" method="POST">
@@ -57,9 +57,10 @@
 			<td>Status</td>
 		</thead>
 	<?php
-		$stmt = $pdo->query("SELECT U.id,U.username,U.email,S.name FROM users U
-							JOIN status S ON S.id = U.status_id 
-							WHERE U.username LIKE '$lettre%' AND S.name = '$status' ORDER BY username");
+		$stmt = $pdo->prepare("SELECT U.id,U.username,U.email,S.name FROM users U
+							   JOIN status S ON S.id = U.status_id 
+							   WHERE U.username LIKE ? AND S.name = ? ORDER BY username");
+		$stmt->execute([$lettre,$status]);
 		while ($row = $stmt->fetch())
 		{
 			echo '<tr>';
