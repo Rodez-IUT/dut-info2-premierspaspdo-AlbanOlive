@@ -1,0 +1,1 @@
+Si le ou les caractères entrés peuvent être interpretés comme une partie d'une requete SQL alors ils sont condsidérés comme tel et peuvent donc invalider ou modifier cette requete.

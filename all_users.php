@@ -28,15 +28,13 @@
 			$status = $_POST['status'] ;
 		}
 		if (isset($_POST['lettre'])) {
-			$lettre = $_POST['lettre'];
-			
+			$lettre = $_POST['lettre'];			
 		}
 	?>
 	<form action="all_users.php" method="POST">
 		Start with letter : <input type="text" name="lettre" id="lettre">
 		and status is : <select name="status" id="status">
-							<?php 
-							echo $status;
+							<?php
 								echo '<option value="Active account"';
 								if ($status == 'Active account') {
 									echo ' selected';
