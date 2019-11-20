@@ -25,28 +25,30 @@
 		$statusID = 2;
 		$lettre = '%';
 		$action = "";
-		$userID = "";		
-		if (isset($_GET['action'])) {
-			$action = $_GET['action'];
-		}
-		if (isset($_GET['user_id'])) {
-			$userID = $_GET['user_id'];
-		}
+		$userID = "";
 		if (isset($_GET['status'])) {
 			switch ($_GET['status']) {
 				case 'waitValid':
-					$statusID =  1;
+					$statusID = 1;
 					break;
 				case 'active':
 					$statusID = 2;
 					break;
 				case 'waitDel':
-					$statusID =  3;
+					$statusID = 3;
 					break;
 			}			
 		}
 		if (isset($_GET['lettre'])) {
 			$lettre = $_GET['lettre'].'%';			
+		}	
+		if (isset($_GET['action']) && isset($_GET['user_id']) && isset($_GET['status']) && $_GET['action'] == "askDeletion") {
+			$action = $_GET['action'];
+			$userID = $_GET['user_id'];
+			$stmt = $pdo->prepare("INSERT INTO action_log (action_date,action_name,user_id) VALUES (NOW(),?,?)");
+			$stmt->execute([$action,$userID]);
+			$stmt = $pdo->prepare("UPDATE users SET status_id = ? WHERE id = ?");
+			$stmt->execute([3,$userID]);
 		}
 	?>
 	<form action="all_users.php" method="GET">
