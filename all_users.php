@@ -23,7 +23,15 @@
 			throw new PDOException($e->getMessage(), (int)$e->getCode());
 		}
 		$statusID = 2;
-		$lettre = '%';		
+		$lettre = '%';
+		$action = "";
+		$userID = "";		
+		if (isset($_GET['action'])) {
+			$action = $_GET['action'];
+		}
+		if (isset($_GET['user_id'])) {
+			$userID = $_GET['user_id'];
+		}
 		if (isset($_GET['status'])) {
 			switch ($_GET['status']) {
 				case 'waitValid':
@@ -83,7 +91,10 @@
  		   		echo '<td>'.$row['id'].'</td>';
  		   		echo '<td>'.$row['username'].'</td>';
  		   		echo '<td>'.$row['email'].'</td>';
- 		   		echo '<td>'.$row['name'].'</td>';
+				echo '<td>'.$row['name'].'</td>';
+				if ($statusID == 3) {
+					echo '<td><a href="all_users.php?user_id='.$row['id'].'&status=waitDel&action=askDeletion">Ask deletion</a></td>';
+				}	
  		   	echo '</tr>';
 		}
 	?>
