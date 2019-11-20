@@ -22,26 +22,42 @@
 		} catch (PDOException $e) {
 			throw new PDOException($e->getMessage(), (int)$e->getCode());
 		}
-		$status = 'Active account';
+		$statusID = 2;
 		$lettre = '%';		
-		if (isset($_POST['status'])) {
-			$status = $_POST['status'] ;
+		if (isset($_GET['status'])) {
+			switch ($_GET['status']) {
+				case 'waitValid':
+					$statusID =  1;
+					break;
+				case 'active':
+					$statusID = 2;
+					break;
+				case 'waitDel':
+					$statusID =  3;
+					break;
+			}			
 		}
-		if (isset($_POST['lettre'])) {
-			$lettre = $_POST['lettre'].'%';			
+		if (isset($_GET['lettre'])) {
+			$lettre = $_GET['lettre'].'%';			
 		}
 	?>
-	<form action="all_users.php" method="POST">
+	<form action="all_users.php" method="GET">
 		Start with letter : <input type="text" name="lettre" id="lettre">
 		and status is : <select name="status" id="status">
 							<?php
-								echo '<option value="Active account"';
-								if ($status == 'Active account') {
+								echo '<option value="waitValid"';
+								if ($statusID == 1) {
+									echo ' selected';
+								}
+								echo '>Waiting for account validation</option>';
+								echo '<option value="active"';
+								if ($statusID == 2) {
 									echo ' selected';
 								}
 								echo '>Active account</option>';
-								echo '<option value="Waiting for account deletion"';
-								if ($status == 'Waiting for account deletion') {
+								
+								echo '<option value="waitDel"';
+								if ($statusID == 3) {
 									echo ' selected';
 								}
 								echo '>Waiting for account deletion</option>';
@@ -59,8 +75,8 @@
 	<?php
 		$stmt = $pdo->prepare("SELECT U.id,U.username,U.email,S.name FROM users U
 							   JOIN status S ON S.id = U.status_id 
-							   WHERE U.username LIKE ? AND S.name = ? ORDER BY username");
-		$stmt->execute([$lettre,$status]);
+							   WHERE U.username LIKE ? AND U.status_id = ? ORDER BY username");
+		$stmt->execute([$lettre,$statusID]);
 		while ($row = $stmt->fetch())
 		{
 			echo '<tr>';
