@@ -92,7 +92,7 @@
  		   		echo '<td>'.$row['username'].'</td>';
  		   		echo '<td>'.$row['email'].'</td>';
 				echo '<td>'.$row['name'].'</td>';
-				if ($statusID == 3) {
+				if ($statusID != 3) {
 					echo '<td><a href="all_users.php?user_id='.$row['id'].'&status=waitDel&action=askDeletion">Ask deletion</a></td>';
 				}	
  		   	echo '</tr>';
