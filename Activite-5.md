@@ -1,0 +1,1 @@
+Une entrée est ajoutée à la table action_log mais la table users n'est pas modifiée

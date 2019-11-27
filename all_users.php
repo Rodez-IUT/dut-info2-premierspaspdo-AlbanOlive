@@ -2,6 +2,17 @@
 <html lang="fr">
 <head>
 	<meta charset="utf-8">
+	<style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
 	<title>Activité 2</title>
 </head>
 <body>
@@ -47,6 +58,7 @@
 			$userID = $_GET['user_id'];
 			$stmt = $pdo->prepare("INSERT INTO action_log (action_date,action_name,user_id) VALUES (NOW(),?,?)");
 			$stmt->execute([$action,$userID]);
+			throw new PDOException();
 			$stmt = $pdo->prepare("UPDATE users SET status_id = ? WHERE id = ?");
 			$stmt->execute([3,$userID]);
 		}
