@@ -1,1 +1,1 @@
-Une entrée est ajoutée à la table action_log mais la table users n'est pas modifiée
+La table action_log a été rollback car il y a eu une exception avant le commit

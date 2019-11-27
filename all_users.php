@@ -56,11 +56,19 @@
 		if (isset($_GET['action']) && isset($_GET['user_id']) && isset($_GET['status']) && $_GET['action'] == "askDeletion") {
 			$action = $_GET['action'];
 			$userID = $_GET['user_id'];
-			$stmt = $pdo->prepare("INSERT INTO action_log (action_date,action_name,user_id) VALUES (NOW(),?,?)");
-			$stmt->execute([$action,$userID]);
-			throw new PDOException();
-			$stmt = $pdo->prepare("UPDATE users SET status_id = ? WHERE id = ?");
-			$stmt->execute([3,$userID]);
+			try {
+				$pdo->beginTransaction();
+				$stmt = $pdo->prepare("INSERT INTO action_log (action_date,action_name,user_id) VALUES (NOW(),?,?)");
+				$stmt->execute([$action,$userID]);
+				throw new PDOException();
+				$stmt = $pdo->prepare("UPDATE users SET status_id = ? WHERE id = ?");
+				$stmt->execute([3,$userID]);
+				$pdo->commit();
+			}catch (PDOException $e) {
+				$pdo->rollBack();
+				throw new PDOException($e->getMessage(), (int)$e->getCode());
+		   }
+			
 		}
 	?>
 	<form action="all_users.php" method="GET">
